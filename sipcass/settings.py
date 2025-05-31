@@ -19,11 +19,6 @@ DEBUG = os.getenv('DEBUG', '0').lower() in ['1', 'true', 't']
 
 ALLOWED_HOSTS = ['sipcassmodelbackend.onrender.com', 'localhost', '127.0.0.1', '.onrender.com']
 
-# Add this right after ALLOWED_HOSTS
-if 'RENDER' in os.environ:
-    ALLOWED_HOSTS.append(os.environ.get('RENDER_EXTERNAL_HOSTNAME', ''))
-    CSRF_TRUSTED_ORIGINS.append(f"https://{os.environ.get('RENDER_EXTERNAL_HOSTNAME', '')}")
-
 
 if not DEBUG:
     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')  # For Render's proxy
@@ -110,6 +105,13 @@ USE_I18N = True
 USE_TZ = True # Keep this True, especially with PostgreSQL
 
 CSRF_TRUSTED_ORIGINS = ["https://sipcassmodelbackend.onrender.com","https://sipcassmodel-backend.onrender.com"]
+
+if 'RENDER' in os.environ:
+    RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
+    if RENDER_EXTERNAL_HOSTNAME:
+        ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
+        CSRF_TRUSTED_ORIGINS.append(f"https://{RENDER_EXTERNAL_HOSTNAME}")
+
 
 # --- Media Files (User Uploads) ---
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
