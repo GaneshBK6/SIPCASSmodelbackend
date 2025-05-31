@@ -17,7 +17,12 @@ SECRET_KEY = os.getenv('DJANGO_SECRET_KEY') # Changed from SECRET_KEY to DJANGO_
 
 DEBUG = os.getenv('DEBUG', '0').lower() in ['1', 'true', 't']
 
-ALLOWED_HOSTS = ['sipcassmodel-backend.onrender.com', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['sipcassmodelbackend.onrender.com', 'localhost', '127.0.0.1', '.onrender.com']
+
+# Add this right after ALLOWED_HOSTS
+if 'RENDER' in os.environ:
+    ALLOWED_HOSTS.append(os.environ.get('RENDER_EXTERNAL_HOSTNAME', ''))
+    CSRF_TRUSTED_ORIGINS.append(f"https://{os.environ.get('RENDER_EXTERNAL_HOSTNAME', '')}")
 
 
 if not DEBUG:
@@ -104,7 +109,7 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_TZ = True # Keep this True, especially with PostgreSQL
 
-CSRF_TRUSTED_ORIGINS = ["https://sipcassmodel-backend.onrender.com"]
+CSRF_TRUSTED_ORIGINS = ["https://sipcassmodelbackend.onrender.com","https://sipcassmodel-backend.onrender.com"]
 
 # --- Media Files (User Uploads) ---
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
@@ -122,4 +127,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CORS_ALLOWED_ORIGINS = [
     "https://sipcassmodel-frontend.vercel.app",
     "http://localhost:3000",  # For local testing
+]
+
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
 ]
