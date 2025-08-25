@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import UploadExcelView, RawDataView, SummaryView, GeneratePDFView, LatestFileView, AOPTargetUploadView, AOPTargetListView, AOPTargetUpdateView, AccessFileUploadView, LoginView
+from .views import UploadExcelView, RawDataView, SummaryView, GeneratePDFView, LatestFileView, AOPTargetUploadView, AOPTargetListView, AOPTargetUpdateView, AccessFileUploadView, LoginView, CreateSuperuserView
 from rest_framework_simplejwt.views import TokenRefreshView
 
 
