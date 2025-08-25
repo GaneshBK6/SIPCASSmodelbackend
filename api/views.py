@@ -22,6 +22,9 @@ from reportlab.pdfgen import canvas
 from reportlab.platypus import Table, TableStyle
 from io import BytesIO
 from datetime import datetime
+from django.contrib.auth import get_user_model
+
+
 
 ROLE_HIERARCHY = {
     'DM': ['DM', 'AM', 'Seller'],
@@ -413,3 +416,29 @@ class LoginView(APIView):
                 'region': user.region,
             }
         })
+
+
+User = get_user_model()
+
+class CreateSuperuserView(APIView):
+    def post(self, request):
+        username = request.data.get('employee_id')
+        password = request.data.get('password')
+        name = request.data.get('name', 'Admin')
+        position = request.data.get('position', 'DM')
+        region = request.data.get('region', 'All')
+
+        if not username or not password:
+            return Response({"error": "Employee ID and password required"}, status=status.HTTP_400_BAD_REQUEST)
+
+        if User.objects.filter(employee_id=username).exists():
+            return Response({"error": "User already exists"}, status=status.HTTP_400_BAD_REQUEST)
+
+        user = User.objects.create_superuser(
+            employee_id=username,
+            password=password,
+            name=name,
+            position=position,
+            region=region
+        )
+        return Response({"success": f"Superuser {username} created."}, status=status.HTTP_201_CREATED)
