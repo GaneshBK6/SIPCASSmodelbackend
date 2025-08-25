@@ -13,7 +13,7 @@ load_dotenv()
 
 SECRET_KEY = os.getenv('DJANGO_SECRET_KEY') # Changed from SECRET_KEY to DJANGO_SECRET_KEY for clarity
 
-
+AUTH_USER_MODEL = 'api.AppUser'
 
 DEBUG = os.getenv('DEBUG', '0').lower() in ['1', 'true', 't']
 
@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'api', # Your custom app
     'corsheaders',
     # 'storages', # Add this if you go with S3/GCS for media files
+    'rest_framework_simplejwt',
 ]
 
 # --- Middleware ---
@@ -74,7 +75,7 @@ TEMPLATES = [
 ]
 
 # --- WSGI Application ---
-WSGI_APPLICATION = 'wsgi.application'
+WSGI_APPLICATION = 'sipcass.wsgi.application'
 
 # Database (PostgreSQL - Render provides this)
 DATABASES = {
@@ -128,9 +129,22 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # --- CORS Headers Settings ---
 CORS_ALLOWED_ORIGINS = [
     "https://sipcassmodel-frontend.vercel.app",
-    "http://localhost:3000",  # For local testing
+    "http://localhost:5173",  # For local testing
 ]
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
+}
+
+
+
+
