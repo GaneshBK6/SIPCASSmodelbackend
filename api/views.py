@@ -421,6 +421,7 @@ class LoginView(APIView):
 User = get_user_model()
 
 class CreateSuperuserView(APIView):
+    permission_classes = [AllowAny]
     def post(self, request):
         username = request.data.get('employee_id')
         password = request.data.get('password')
