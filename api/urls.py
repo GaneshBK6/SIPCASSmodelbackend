@@ -15,4 +15,5 @@ urlpatterns = [
     path('access-file/upload/', AccessFileUploadView.as_view(), name='access-file-upload'),
     path('login/', LoginView.as_view(), name='login'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('create-superuser/', CreateSuperuserView.as_view(), name='create-superuser'),
 ]
